@@ -27,7 +27,7 @@
         },
         created(){
           this.$http.get('/apis/static/data.json').then((response) => {
-            this.seler = response.body.seller
+            this.seller = response.body.seller
           })
         },
 
