@@ -4,7 +4,6 @@
             <div class="avatar">
                 <img width="64" height="64" :src="seller.avatar">
             </div>
-            //内容区域
             <div class="content">
                 <div class="title">
                     <span class="brand"></span>
@@ -18,6 +17,10 @@
                     <span class="text">{{seller.supports[0].description}}</span>
                 </div>
             </div>
+        </div>
+        <!--背景图-->
+        <div class="background">
+            <img :src="seller.avatar" width="100%" height="100%">
         </div>
     </div>
 </template>
@@ -34,13 +37,17 @@
 <style lang="stylus" type="text/stylus" scoped>
     @import "../../common/stylus/mixin.styl"
   .header
+    position relative
     color:#fff
-    background #000
+    background:rgba(7,17,27,0.4)
     .content-wrapper
         padding 24px 12px 18px 24px
         font-size:0
         .avatar
           display:inline-block
+          vertical-align top
+          img
+            border-radius 5px
         .content
           display:inline-block
           font-size 14px
@@ -62,6 +69,17 @@
                font-weight bold
 
 
-
+          .description
+            margin-bottom 10px
+            line-height 12px
+            font-size 12px
+    .background
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        z-index -1
+        filter blur(10px)
 
 </style>
