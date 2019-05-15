@@ -17,7 +17,11 @@
                     <span class="text">{{seller.supports[0].description}}</span>
                 </div>
             </div>
+<<<<<<< HEAD
             <div v-if="seller.supports" class="support-count" @click="showDetail">
+=======
+            <div v-if="seller.supports" class="support-count">
+>>>>>>> 353c8267332c1a5a287240792e417f9f80382695
                 <span class="count">{{seller.supports.length}}个</span>
                 <i class="icon-keyboard_arrow_right"></i>
             </div>
@@ -57,6 +61,7 @@
                 type: Object
             }
         },
+<<<<<<< HEAD
         data(){
           return{
             detailShow:false
@@ -73,6 +78,10 @@
         },
         components:{
             star
+=======
+        created() {
+            this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+>>>>>>> 353c8267332c1a5a287240792e417f9f80382695
         }
     };
 </script>
@@ -161,11 +170,18 @@
             white-space nowrap
             overflow hidden
             text-overflow ellipsis
+<<<<<<< HEAD
             background:rgba(7,17,27,0.2)
             .bulletin-title
                display inline-block
                vertical-align top
                margin-top 8px
+=======
+            .bulletin-title
+               display inline-block
+               vertical-align top
+               margin-top 7px
+>>>>>>> 353c8267332c1a5a287240792e417f9f80382695
                width 22px
                height 12px
                background-size 22px 12px
