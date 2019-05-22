@@ -98,7 +98,7 @@
         },
         components: {
             star
-        },
+        }
     };
 </script>
 
