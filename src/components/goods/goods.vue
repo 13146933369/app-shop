@@ -16,7 +16,7 @@
                 <li v-for="item in goods" class="food-list food-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
-                        <li @click="selectFood(food,$event)" v-for="food in item.foods" class="food-item border-1px">
+                        <li v-for="food in item.foods" class="food-item border-1px">
                             <div class="icon">
                                 <img width="57" height="57" :src="food.icon">
                             </div>
@@ -29,7 +29,9 @@
                                 <div class="price">
                                     <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
+                                <!--控制组件-->
                                 <div class="cartcontrol-wrapper">
+                                    <cartcontrol :food="food"></cartcontrol>
                                 </div>
                             </div>
                         </li>
@@ -43,12 +45,13 @@
 <script type="text/ecmascript-6">
     import BScroll from 'better-scroll';
     import shopcart from '../../components/shopcart/shopcart'
+    import cartcontrol from '../../components/cartcontrol/cartcontrol'
     export default {
         data(){
             return{
                 goods:[],
                 seller:"",
-                listHeight:[],//左侧数组高度
+                listHeight:[],//左侧数组高度 
                 scrollY:0
             }
         },
@@ -94,6 +97,7 @@
                   click:true
               })
               this.foodsWrapper = new BScroll(this.$refs.foodsWrapper,{
+                  click:true,
                   probeType:3
               });
 
@@ -114,7 +118,8 @@
           }
         },
         components:{
-            shopcart
+            shopcart,
+            cartcontrol
         }
 
     };

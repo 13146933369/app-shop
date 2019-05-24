@@ -14,12 +14,9 @@
             </div>
             <!--右边开始-->
             <div class="content-right">
-                <div class="pay">
-                    ￥{{seller.minPrice}}
-                </div>
+                <div class="pay" :class="payClass">{{payDesc}}</div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -32,10 +29,10 @@
                 type:Array,
                 default(){
                  return[
-                     // {
-                     //     price:1,
-                     //     count:10
-                     // }
+                     {
+                         price:1,
+                         count:10
+                     }
                  ]
                 }
             }
@@ -61,12 +58,20 @@
             },
            payDesc(){
                if(this.totalPrice ===0){
-                   return `元起送￥${this.seller.minPrice}`
-               }else if(this.totalPrice<this.seller.minPrice){
-                   let diff = this.minPrice - this.totalPrice
-                   return  `还差￥${dff}`
+               }else if(this.totalPrice < this.seller.minPrice){
+                   let diff = this.seller.minPrice - this.totalPrice
+                   return  `还差￥${diff}元起送`
+               }else{
+                   return '去结算';
                }
-           }
+           },
+            payClass(){
+                if(this.totalPrice < this.seller.minPrice){
+                    return 'not-enough'
+                }else{
+                    return 'enough'
+                }
+            }
         }
     }
 </script>
@@ -152,8 +157,11 @@
           font-size 16px
           color rgba(255,255,255,0.4)
           font-weight 700
-          background: #2b333b
-
+          &.not-enough
+            background #2b333b
+          &.enough
+            background-color #00b43c
+            color:#fff
 
 
 </style>
