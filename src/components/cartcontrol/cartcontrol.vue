@@ -1,11 +1,11 @@
 <template>
     <div class="cartcontrol">
-        <div class="cart-decrease" v-show="food.count > 0" @click="decreaseCart">
-            <transition name="fade">
+        <transition name="fade">
+            <div class="cart-decrease" v-show="food.count> 0" @click="decreaseCart">
                 <span class="inner icon-remove_circle_outline"></span>
-            </transition>
-        </div>
-        <div class="cart-count" v-show="food.count > 0">{{food.count}}</div>
+            </div>
+        </transition>
+        <div class="cart-count" v-show="food.count> 0">{{food.count}}</div>
         <div class="cart-add icon-add_circle" @click="addCart($event)"></div>
     </div>
 </template>
@@ -18,7 +18,7 @@
             }
         },
         created(){
-          console.log(this.food)
+
         },
        methods:{
            addCart(event){
@@ -30,6 +30,8 @@
                }else{
                    this.food.count++;
                }
+               this.$emit('cart-add',event.target) //添加这句，提交'cart-add'事情给父组件，第二个是要传递的参数
+
            },
            decreaseCart(event){
                if(!event._constructed){
@@ -37,7 +39,6 @@
                }
                if(this.food){
                    this.food.count--;
-
                }
            }
        }
@@ -50,22 +51,11 @@
   .cart-decrease
     display  inline-block
     padding 6px
-    &.move-transition
-     opacity 1
-     transform translate3d(0,0,0)
     .inner
       line-height 24px;
       font-size 24px
       color rgb(0,160,220)
-
-    &.fade-enter, &.fade-leave-active
-      opacity 0
-      transform translateX(24px,0)
-    &.fade-enter-active, &.fade-leave-active
-      opacity 1
-      transform translateX(0,0)
-      transform all 5s linear
-   .cart-add
+  .cart-add
     display inline-block
     line-height 24px
     font-size 24px
@@ -80,4 +70,17 @@
     text-align center
     font-size 10px;
     color rgb(147,153,159)
+  .fade-enter-active
+      animation: bounce-in .3s linear
+    @keyframes bounce-in
+        0%
+          transform: translate3d(20px,0,0)
+          opacity 0
+        100%
+          transform: translate3d(0,0,0)
+          opacity 1
+  .fade-leave-active
+     animation: bounce-in .3s reverse;
+
+
 </style>

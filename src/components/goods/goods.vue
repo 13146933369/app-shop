@@ -31,7 +31,7 @@
                                 </div>
                                 <!--控制组件-->
                                 <div class="cartcontrol-wrapper">
-                                    <cartcontrol :food="food"></cartcontrol>
+                                    <cartcontrol :food="food" v-on:cart-add="cartAdd"></cartcontrol>
                                 </div>
                             </div>
                         </li>
@@ -39,7 +39,7 @@
                 </li>
             </ul>
         </div>
-       <shopcart :seller="seller"></shopcart>
+       <shopcart ref="shopcart":select-foods="selectFoods" :seller="seller"></shopcart>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -65,6 +65,19 @@
                     }
                 }
                 return 0
+            },
+            selectFoods() {
+                let foods =[]
+                if(this.goods){
+                    this.goods.forEach((good) => {
+                       good.foods.forEach((food) => {
+                           if(food.count){
+                               foods.push(food)
+                           }
+                       })
+                    })
+                    return foods
+                }
             }
 
         },
@@ -74,13 +87,13 @@
             this.$http.get('/apis/static/data.json').then((response) => {
                 this.goods = response.body.goods
                 this.seller =  response.body.seller
-                console.log(this.seller)
                 this.$nextTick(() => {
                     self._initScroll()
                     self._calculateHeight()
 
                 })
             })
+
         },
         methods:{
             //右侧点击事件
@@ -115,13 +128,18 @@
                    height += item.clientHeight
                    this.listHeight.push(height)
                }
-          }
+          },
+          cartAdd(el){
+             this.$nextTick(()=>{
+                 this.$refs['shopcart'].drop(el)
+             })
+          },
+
         },
         components:{
             shopcart,
             cartcontrol
         }
-
     };
 </script>
 
