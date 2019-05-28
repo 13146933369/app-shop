@@ -18,9 +18,12 @@
             </div>
         </div>
         <!--加入商品小球效果-->
-        <div class="ball-container">
-            <transition-group name="drop">
-                <div class="ball" v-for="(ball,index) in balls" :key ="index" v-show="ball.show">
+        <div class="ball-wrapper">
+            <transition-group name="drop" tag="div"
+              v-on:before-enter="beforeEnter"
+              v-on:enter="dropEnter"
+              v-on:after-enter="afterEnter">
+                <div class="ball" v-for="(ball,index) in balls" v-show="ball.show" :key="index">
                     <div class="inner inner-hook"></div>
                 </div>
             </transition-group>
@@ -42,19 +45,24 @@
             return{
                 balls:[
                     {
-                        show:false
+                        show:false,
+                        el: null
                     },
                     {
-                        show:false
+                        show:false,
+                        el: null
                     },
                     {
-                        show:false
+                        show:false,
+                        el: null
                     },
                     {
-                        show:false
+                        show:false,
+                        el: null
                     },
                     {
-                        show:false
+                        show:false,
+                        el: null
                     }
                 ],
                 dropBall:[]
@@ -82,6 +90,7 @@
             },
            payDesc(){
                if(this.totalPrice ===0){
+                   return  `还差20元起送`
                }else if(this.totalPrice < this.seller.minPrice){
                    let diff = this.seller.minPrice - this.totalPrice
                    return  `还差￥${diff}元起送`
@@ -108,49 +117,48 @@
                         return
                     }
                 }
+            },
 
-            }
-        },
-        transitions:{
-            drop:{
-                beforeEnter(el){
-                   let count = hits.balls.length
-                    while(count--){
-                       let ball = this.balls[count]
-                        if(ball.show){
-                           let rect = ball.el.getBoundingClientRect();
-                           let x = rect.left - 32
-                           let y = -(window.innerHeight - rect.top -22)
-                           el.style.display =""
-                           el.style.webkitTransform = 'translate3d(0,${y}px,0)'
-                           el.style.transform = 'translate3d(0,${y}px,0)'
-                           let inner = el.getElementsByName('inner-hook')[0]
-                           inner.style.webkitTransform = 'translate3d(${x}px,0,0)'
-                           inner.style.transform = 'translate3d(${x}px,0,0)'
-                        }
-                    }
-
-                },
-                enter(el){
-                    /*eslint-disable no-unused-vars */
-                    let rf = el.offsetHeight
-                    this.$nextTick(() => {
-                        el.style.webkitTransform = translate3d(0,0,0)
-                        el.style.transform = translate3d(0,0,0)
-                        let inner = el.getElementsByName('inner-hook')[0]
-                        inner.style.webkitTransform = translate3d(0,0,0)
-                        inner.style.transform = translate3d(0,0,0)
-                    })
-                },
-                afterEnter(el){
-                    let ball = this.dropBall.shift()
-                    if(ball){
-                        ball.show = false
-                        el.style.display = 'none'
+            beforeEnter(el,done){
+                let count = this.balls.length;
+                while(count --){
+                    let ball = this.balls[count]
+                    if(ball.show){
+                        let rect = ball.el.getBoundingClientRect();
+                        let x = rect.left - 32;
+                        let y = -(window.innerHeight - rect.top -22)
+                        el.style.display = '';
+                        el.style.transform = `translate3d(0,${y}px,0)`
+                        el.style.webkitTransform = `translate3d(0,${y}px,0)`
+                        let inner = el.getElementsByClassName('inner-hook')[0];
+                        inner.style.transform =`translate3d(${x}px,0,0)`
+                        inner.style.webkitTransform = `translate3d(${x},0,0)`
                     }
                 }
+            },
+            dropEnter(el){
+                /* eslint-disable no-unused-vars */
+                /* 触发浏览器重绘; */
+                let rf=el.offsetHeight
+                this.$nextTick(()=>{
+                    el.style.webkitTransform = 'translate3d(0, 0, 0)';
+                    el.style.transform = 'translate3d(0, 0, 0)';
+                    let inner = el.getElementsByClassName('inner-hook')[0];
+                    inner.style.webkitTransform = 'translate3d(0, 0, 0)';
+                    inner.style.transform = 'translate3d(0, 0, 0)';
+                })
+            },
+            afterEnter(el){
+                console.log(el)
+                   el.style.display="none"
+                    let ball = this.dropBall.shift()
+                    ball.show =false
+                    ball.el = null
+
             }
+
         }
+
     }
 </script>
 
@@ -240,19 +248,19 @@
           &.enough
             background-color #00b43c
             color:#fff
-
-
-      .ball
-        position fixed
-        left 32px
-        bottom 22px
-        z-index 200
-        &.drop-enter-active
-          transition all 0.5s cubic-bezier(0.49,-0.29,0.75,0.41)
-          .inner
-           width 16px
-           height 16px
-           border-radius 50%
-           background rgb(0,160,220)
+    .ball-wrapper
+        .ball
+            position fixed
+            left 32px
+            bottom 22px
+            z-index 200
+            .inner
+                width 15px
+                height 15px
+                border-radius 50%
+                background-color #00A0DC
+                transition all 1s linear
+            &.drop-enter-active
+                transition all 1s cubic-bezier(0.49, -0.29, 0.75, 0.41)
 
 </style>
